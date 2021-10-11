@@ -41,13 +41,13 @@ const goA = (input: string): number => {
 
 const goB = (input: string): number => {
   const treeMap: string[] = splitTreeMap(input)
-  let treeCounts: number[]
+  let treeCounts: number[] = new Array(5)
 
-  treeCounts[0] *= calculateNumberOfTrees(1, 1, treeMap)
-  treeCounts[1] *= calculateNumberOfTrees(3, 1, treeMap)
-  treeCounts[2] *= calculateNumberOfTrees(5, 1, treeMap)
-  treeCounts[3] *= calculateNumberOfTrees(7, 1, treeMap)
-  treeCounts[4] *= calculateNumberOfTrees(1, 2, treeMap)
+  treeCounts[0] = calculateNumberOfTrees(1, 1, treeMap)
+  treeCounts[1] = calculateNumberOfTrees(3, 1, treeMap)
+  treeCounts[2] = calculateNumberOfTrees(5, 1, treeMap)
+  treeCounts[3] = calculateNumberOfTrees(7, 1, treeMap)
+  treeCounts[4] = calculateNumberOfTrees(1, 2, treeMap)
 
   return treeCounts.reduce((acc, count) => acc * count, 1)
 }
