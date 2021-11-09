@@ -4,17 +4,34 @@ const prepareInput = (rawInput: string) => rawInput
 
 const input = prepareInput(readInput())
 
+
+interface SeatRange {
+  front: number
+  back: number
+  left: number
+  right: number
+}
+
+interface SeatBoundary extends SeatRange {
+  seatDirection: string
+}
+
+const getSeatBoundary = ({front, back, left, right, seatDirection}: SeatBoundary): SeatRange => {
+  if (seatDirection === 'F') back = Math.floor((back + front) / 2)
+  if (seatDirection === 'B') front = Math.ceil((back + front) / 2)
+  
+  if (seatDirection === 'L') right = Math.floor((right + left) / 2)
+  if (seatDirection === 'R') left = Math.ceil((right + left) / 2)
+  return {front, back, left, right}
+}
+
 const getOccupiedSeats = (boardingPasses: string[]): number[] => boardingPasses.map(boardingPass => {
-  let front = 0, back = 127
-  let left = 0, right = 7
+  let seatRange = {front: 0, back: 127, left: 0, right: 7}
+
   boardingPass.split('').forEach(seatDirection => {
-    if (seatDirection === 'F') back = Math.floor((back + front) / 2)
-    if (seatDirection === 'B') front = Math.ceil((back + front) / 2)
-    
-    if (seatDirection === 'L') right = Math.floor((right + left) / 2)
-    if (seatDirection === 'R') left = Math.ceil((right + left) / 2)
+    seatRange = {...getSeatBoundary({...seatRange, seatDirection})}
   })
-  return (front * 8 + left)
+  return (seatRange.front * 8 + seatRange.left)
 })
 
 const getOrderedSeats = (occupiedSeats: number[]): number[] => occupiedSeats.sort(function(a, b) {
